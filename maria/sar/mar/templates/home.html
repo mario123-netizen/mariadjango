@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Canteen Ordering System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* Body Orange Background */
+body {
+  min-height: 100vh;
+  background: linear-gradient(270deg, #95d1c7, #29e16c, #36733b);
+  background-size: 600% 600%;
+  animation: orangeBG 15s ease infinite;
+  color: white;
+}
+
+@keyframes orangeBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Hide main content until login */
+#main-content { display: none; }
+
+/* Navbar */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: rgba(178, 66, 66, 0.84);
+  backdrop-filter: blur(12px);
+  border-bottom: 2px solid white;
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #e8e1e8, #f9f0f9, #fef6f3);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+nav ul li a:hover {
+  background: linear-gradient(90deg, #61c74a, #f20808, #51bdeb);
+  color: black;
+  font-weight: 600;
+}
+
+.login-btn { border: 1px solid white; }
+
+/* HERO */
+#home {
+  background-color: #05c2f6e4;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+#home h1 {
+  font-size: 3rem;
+  color: white;
+}
+
+.hero-btn {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 14px 30px;
+  border-radius: 30px;
+  background-color: #11411c;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.5s;
+}
+
+.hero-btn:hover { background-color: #fc0404; }
+
+/* API Posts Container */
+#api-posts {
+  margin-top: 30px;
+  max-height: 500px;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.25);
+  padding: 20px;
+  border-radius: 20px;
+}
+
+/* Products */
+#products { background: rgb(92, 8, 8); border-radius: 20px; padding: 50px 20px; margin: 40px; }
+.products-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 40px; }
+.product-card { background: rgb(244, 16, 229); padding: 20px; border-radius: 20px; backdrop-filter: blur(8px); transition: 0.3s; }
+.product-card:hover { transform: translateY(-10px); background: rgba(27, 232, 229, 0.98); }
+.product-card h3 { color: #dfdf0b; margin-bottom: 10px; }
+.product-card p { font-size: 0.9rem; margin-bottom: 10px; opacity: 0.9; }
+.product-card button { padding: 8px 15px; border: none; border-radius: 20px; background: linear-gradient(90deg,#FFA500,#FF8C00,#FF7F50); font-weight: 600; cursor: pointer; transition:0.5s; color:black; background-size:400% 400%; animation:orangeBtn 8s ease infinite; }
+
+@keyframes orangeBtn {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* Cart */
+#cart { margin-top: 40px; background: rgb(102, 250, 10); padding:25px; border-radius:20px; max-width:500px; margin-left:auto; margin-right:auto; }
+#cart ul { list-style: none; margin-bottom: 15px; }
+#cart button { width:100%; padding:10px; border:none; border-radius:20px; background: linear-gradient(90deg,#FFA500,#FF8C00,#FF7F50); font-weight:600; cursor:pointer; color:black; background-size:400% 400%; animation:orangeBtn 8s ease infinite; }
+
+/* About */
+#about { background: rgba(0,0,0,0.25); padding:50px 20px; border-radius:20px; }
+
+/* Contact - Pink */
+#contact { background-color: #f90981; padding:50px 20px; border-radius:20px; }
+
+.contact-box { max-width:500px; margin:auto; display:flex; flex-direction:column; gap:15px; margin-top:30px; }
+.contact-box input, .contact-box textarea { padding:12px; border:none; border-radius:10px; outline:none; }
+
+/* Login Modal */
+#login-modal { position: fixed; inset:0; background: rgba(11, 190, 249, 0.85); display:flex; justify-content:center; align-items:center; z-index:2000; }
+.login-box { background: rgb(13, 52, 11); padding:40px; border-radius:20px; backdrop-filter: blur(12px); max-width:350px; width:100%; text-align:center; }
+.login-box h2 { margin-bottom:20px; font-size:1.8rem; background: linear-gradient(90deg,#FFA500,#FF8C00,#FF7F50); -webkit-background-clip:text; color:transparent; animation:orangeBtn 8s ease infinite; }
+.login-box input { width:100%; padding:12px; margin:10px 0; border-radius:10px; border:none; outline:none; }
+.login-box button { width:100%; padding:12px; border-radius:20px; border:none; font-weight:600; cursor:pointer; margin-top:10px; background:linear-gradient(90deg,#FFA500,#FF8C00,#FF7F50); color:black; background-size:400% 400%; animation:orangeBtn 8s ease infinite; }
+
+@media(max-width:768px){
+  nav{ flex-direction:column; gap:10px; }
+  .login-box{ padding:30px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN MODAL -->
+<div id="login-modal">
+  <div class="login-box">
+    <h2>Login to Canteen</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main-content">
+<nav>
+  <div class="logo"><i class="fas fa-utensils"></i> Canteen System</div>
+  <ul>
+    <li><a href="#home" onclick="loadAPI()"><i class="fas fa-home"></i> Home</a></li>
+    <li><a href="#products"><i class="fas fa-burger"></i> Products</a></li>
+    <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+    <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+    <li><a href="#" class="login-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+  </ul>
+</nav>
+
+<section id="home">
+  <h1>Delicious Meals Await 🍔</h1>
+  <p>Freshly prepared • Affordable • Made for Students</p>
+  <a href="#products" class="hero-btn">Explore Products</a>
+
+  <!-- API Posts will appear here -->
+  <div id="api-posts"></div>
+</section>
+
+<section id="products">
+  <h2><i class="fas fa-store"></i> Our Products</h2>
+  <div class="products-container">
+    <!-- 21 Products -->
+    <div class="product-card"><h3>Burger - ₱50</h3><p>Juicy beef patty with lettuce, tomato, and cheese.</p><button onclick="addToCart('Burger',50)">Add to Cart</button></div>
+    <div class="product-card"><h3>Pizza Slice - ₱70</h3><p>Cheesy pizza slice with tomato sauce and toppings.</p><button onclick="addToCart('Pizza Slice',70)">Add to Cart</button></div>
+    <div class="product-card"><h3>Milk Tea - ₱60</h3><p>Sweet milk tea with chewy pearls.</p><button onclick="addToCart('Milk Tea',60)">Add to Cart</button></div>
+    <div class="product-card"><h3>Fries - ₱45</h3><p>Crispy golden fries perfectly seasoned.</p><button onclick="addToCart('Fries',45)">Add to Cart</button></div>
+    <div class="product-card"><h3>Hotdog - ₱35</h3><p>Grilled hotdog with ketchup and mustard.</p><button onclick="addToCart('Hotdog',35)">Add to Cart</button></div>
+    <div class="product-card"><h3>Chicken Sandwich - ₱55</h3><p>Grilled chicken breast with lettuce and mayo.</p><button onclick="addToCart('Chicken Sandwich',55)">Add to Cart</button></div>
+    <div class="product-card"><h3>Spaghetti - ₱65</h3><p>Filipino-style sweet spaghetti with meat sauce.</p><button onclick="addToCart('Spaghetti',65)">Add to Cart</button></div>
+    <div class="product-card"><h3>Siomai - ₱40</h3><p>Steamed pork siomai served with soy sauce.</p><button onclick="addToCart('Siomai',40)">Add to Cart</button></div>
+    <div class="product-card"><h3>Pancit Canton - ₱60</h3><p>Stir-fried noodles with vegetables and chicken.</p><button onclick="addToCart('Pancit Canton',60)">Add to Cart</button></div>
+    <div class="product-card"><h3>Softdrinks - ₱25</h3><p>Refreshing soda served chilled.</p><button onclick="addToCart('Softdrinks',25)">Add to Cart</button></div>
+    <div class="product-card"><h3>Ice Cream - ₱30</h3><p>Creamy ice cream in chocolate, vanilla, or strawberry.</p><button onclick="addToCart('Ice Cream',30)">Add to Cart</button></div>
+    <div class="product-card"><h3>French Fries Large - ₱60</h3><p>Extra-large crispy fries for sharing.</p><button onclick="addToCart('French Fries Large',60)">Add to Cart</button></div>
+    <div class="product-card"><h3>Beef Steak - ₱90</h3><p>Grilled beef steak served with rice and gravy.</p><button onclick="addToCart('Beef Steak',90)">Add to Cart</button></div>
+    <div class="product-card"><h3>Chicken Nuggets - ₱50</h3><p>Crispy chicken nuggets with sauce.</p><button onclick="addToCart('Chicken Nuggets',50)">Add to Cart</button></div>
+    <div class="product-card"><h3>Chocolate Shake - ₱55</h3><p>Thick and creamy chocolate milkshake.</p><button onclick="addToCart('Chocolate Shake',55)">Add to Cart</button></div>
+    <div class="product-card"><h3>Fruit Juice - ₱40</h3><p>Freshly squeezed juice from seasonal fruits.</p><button onclick="addToCart('Fruit Juice',40)">Add to Cart</button></div>
+    <div class="product-card"><h3>Fish Fillet - ₱80</h3><p>Crispy fried fish fillet with tartar sauce.</p><button onclick="addToCart('Fish Fillet',80)">Add to Cart</button></div>
+    <div class="product-card"><h3>Vegetable Salad - ₱35</h3><p>Fresh mixed vegetables with light dressing.</p><button onclick="addToCart('Vegetable Salad',35)">Add to Cart</button></div>
+    <div class="product-card"><h3>Chocolate Muffin - ₱30</h3><p>Soft and moist chocolate muffin for snack.</p><button onclick="addToCart('Chocolate Muffin',30)">Add to Cart</button></div>
+    <div class="product-card"><h3>Egg Sandwich - ₱45</h3><p>Scrambled eggs with cheese in toasted bread.</p><button onclick="addToCart('Egg Sandwich',45)">Add to Cart</button></div>
+    <div class="product-card"><h3>Coffee - ₱50</h3><p>Hot brewed coffee for a school boost.</p><button onclick="addToCart('Coffee',50)">Add to Cart</button></div>
+  </div>
+
+  <div id="cart">
+    <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
+    <ul id="cart-list"></ul>
+    <div id="total">Total: ₱0</div>
+    <button onclick="placeOrder()">Place Order</button>
+  </div>
+</section>
+
+<section id="about">
+  <h2><i class="fas fa-school"></i> About Our Canteen</h2>
+  <p>We provide affordable, delicious, and student-friendly meals every day.</p>
+</section>
+
+<section id="contact">
+  <h2><i class="fas fa-envelope-open-text"></i> Contact Us</h2>
+  <div class="contact-box">
+    <input type="text" placeholder="Your Name">
+    <input type="email" placeholder="Your Email">
+    <textarea rows="4" placeholder="Your Message"></textarea>
+    <button>Send Message</button>
+  </div>
+</section>
+
+<script>
+// LOGIN FUNCTION
+function login() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  if(username === "student" && password === "1234") {
+    document.getElementById("login-modal").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+  } else {
+    alert("Invalid credentials! Use username: student, password: 1234");
+  }
+}
+
+// LOGOUT FUNCTION
+function logout() {
+  if(confirm("Are you sure you want to log out?")) {
+    document.getElementById("main-content").style.display = "none";
+    document.getElementById("login-modal").style.display = "flex";
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+  }
+}
+
+// CART FUNCTIONALITY
+let cart = [];
+function addToCart(name, price){
+  cart.push({name, price});
+  updateCart();
+}
+function updateCart(){
+  const list = document.getElementById("cart-list");
+  list.innerHTML = "";
+  let total = 0;
+  cart.forEach(item=>{
+    list.innerHTML += `<li>${item.name} - ₱${item.price}</li>`;
+    total += item.price;
+  });
+  document.getElementById("total").textContent = "Total: ₱" + total;
+}
+function placeOrder(){
+  if(cart.length === 0){
+    alert("Cart is empty!");
+    return;
+  }
+  alert("Order placed successfully 🎉");
+  cart = [];
+  updateCart();
+}
+
+// FETCH 100 POSTS FROM API
+function loadAPI() {
+  const container = document.getElementById("api-posts");
+  container.innerHTML = "<p>Loading posts...</p>";
+  fetch("https://jsonplaceholder.typicode.com/posts")
+    .then(res => res.json())
+    .then(data => {
+      container.innerHTML = "";
+      data.slice(0, 100).forEach(post => {
+        const div = document.createElement("div");
+        div.style.padding = "10px";
+        div.style.marginBottom = "10px";
+        div.style.borderBottom = "1px solid white";
+        div.innerHTML = `<strong>${post.id}. ${post.title}</strong><p>${post.body}</p>`;
+        container.appendChild(div);
+      });
+    })
+    .catch(err => container.innerHTML = "<p>Error loading posts</p>");
+}
+</script>
+
+</body>
+</html>

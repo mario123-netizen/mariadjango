@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+
+<style>
+  .contact-section {
+    min-height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+
+  .contact-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    padding: 45px;
+    border-radius: 25px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    animation: fadeIn 0.5s ease-in-out;
+    color: white;
+  }
+
+  .contact-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    letter-spacing: 1px;
+  }
+
+  .contact-container input,
+  .contact-container textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+  }
+
+  .contact-container input {
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .contact-container textarea {
+    resize: none;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .contact-container input:focus,
+  .contact-container textarea:focus {
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.4);
+  }
+
+  .contact-container button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 40px;
+    background: linear-gradient(45deg, #ff512f, #dd2476);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .contact-container button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(15px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .contact-container {
+      padding: 30px;
+    }
+
+    .contact-container h1 {
+      font-size: 22px;
+    }
+  }
+</style>
+
+<div class="contact-section">
+  <div class="contact-container">
+    <h1>📩 Get In Touch</h1>
+
+    <form method="POST">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Write your message here..." required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

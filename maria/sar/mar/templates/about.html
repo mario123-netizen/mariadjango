@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+
+<style>
+  .about-section {
+    padding: 80px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #ffe0ec, #ffd6e7);
+    min-height: 80vh;
+  }
+
+  .about-section h1 {
+    font-size: 2.8rem;
+    color: #ff4e73;
+    margin-bottom: 20px;
+  }
+
+  .about-section p {
+    max-width: 700px;
+    margin: 0 auto 30px auto;
+    font-size: 1.1rem;
+    color: #444;
+    line-height: 1.7;
+  }
+
+  .about-cards {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+
+  .card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 280px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .card h3 {
+    color: #ff4e73;
+    margin-bottom: 15px;
+  }
+
+  .card p {
+    font-size: 0.95rem;
+    color: #555;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .about-section h1 {
+      font-size: 2rem;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 350px;
+    }
+  }
+</style>
+
+<div class="about-section">
+  <h1>About Mariox History 🎉</h1>
+
+  <p>
+    Welcome to Mariox History! Our goal is to share knowledge, creativity,
+    and inspiration through a beautifully designed Django website.
+    We believe in learning, exploring, and growing together.
+  </p>
+
+  <div class="about-cards">
+    <div class="card">
+      <h3>📚 Our Mission</h3>
+      <p>
+        To provide meaningful and engaging content that helps users
+        explore history and creativity in a modern way.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>🚀 Our Vision</h3>
+      <p>
+        To become a trusted platform where users can learn,
+        discover, and grow through interactive experiences.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>💡 Our Values</h3>
+      <p>
+        Innovation, simplicity, and passion drive everything
+        we build and share with our community.
+      </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
